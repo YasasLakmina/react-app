@@ -1,4 +1,5 @@
 import { MouseEvent, useState } from "react";
+import styles from "./ListGroup.module.css";
 
 interface Props {
   items: string[];
@@ -28,7 +29,7 @@ function ListGroup({ items, heading, onSelectItem }: Props) {
         if x is false it will return false
       */}
       {items.length === 0 && <p>No items in the List</p>}
-      <ul className="list-group">
+      <ul className={[styles.listGroup, styles.container].join(" ")}>
         {items.map((items, index) => (
           <li
             className={
