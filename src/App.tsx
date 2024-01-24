@@ -1,4 +1,6 @@
 import ListGroup from "./Components/ListGroup";
+import { AiFillApple } from "react-icons/ai";
+
 // import { useState } from "react";
 // import Alert from "./Components/Alert";
 // import Button from "./Components/Button";
@@ -25,6 +27,7 @@ function App() {
 
   return (
     <div>
+      <AiFillApple size="40"></AiFillApple>
       <ListGroup
         items={items}
         heading="Cities"
