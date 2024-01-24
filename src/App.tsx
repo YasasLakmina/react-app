@@ -3,7 +3,8 @@ import { AiFillApple } from "react-icons/ai";
 
 import { useState } from "react";
 import Alert from "./Components/Alert";
-import Button from "./Components/ListGroup/Button/Button";
+import Button from "./Components/Button/Button";
+import Like from "./Components/Like";
 
 function App() {
   let items = ["New York", "Tokio", "San Fransisco", "London", "Paris"];
@@ -25,6 +26,8 @@ function App() {
         <Alert onClose={() => setAlertVisibility(false)}>My Alert</Alert>
       )}
       <Button onClick={() => setAlertVisibility(true)}>My Button</Button>
+
+      <Like onClick={() => console.log("Clicked")}></Like>
     </div>
   );
 }
