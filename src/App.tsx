@@ -19,7 +19,16 @@ function App() {
 
   const [tags, setTags] = useState(["happy", "cheerful"]);
 
+  //Updating an array of objects
+  const [bugs, setBugs] = useState([
+    { id: 1, title: "Bug 1", fixed: false },
+    { id: 2, title: "Bug 2", fixed: false },
+  ]);
+
   const handleClick = () => {
+    //to update array of objects
+    setBugs(bugs.map((bug) => (bug.id === 1 ? { ...bug, fixed: true } : bug)));
+
     //Add
     setTags([...tags, "exiting"]);
 
