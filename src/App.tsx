@@ -17,7 +17,18 @@ function App() {
     price: 5,
   });
 
+  const [tags, setTags] = useState(["happy", "cheerful"]);
+
   const handleClick = () => {
+    //Add
+    setTags([...tags, "exiting"]);
+
+    //delete
+    setTags(tags.filter((tag) => tag !== "happy"));
+
+    //update
+    setTags(tags.map((tag) => (tag === "happy" ? "happiness" : tag)));
+
     setDrink({ ...drink, price: 6 });
   };
 
