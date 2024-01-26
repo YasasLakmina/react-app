@@ -6,8 +6,13 @@ import Alert from "./Components/Alert";
 import Button from "./Components/Button/Button";
 import Like from "./Components/Like";
 import { produce } from "immer";
+import NavBar from "./Components/NavBar";
+import Cart from "./Components/Cart";
 
 function App() {
+  //Sharing state between components
+  const [cartItems, setCartItems] = useState(["Product1", "Product2"]);
+
   //Same kind stateHooks
   // const [title, setTitle] = useState("Americano");
   // const [price, setPrice] = useState(5);
@@ -82,6 +87,10 @@ function App() {
         </p>
       ))}
       <button onClick={handleClick}> Click Me</button>
+
+      {/*//Sharing state between NavBar and Cart Components*/}
+      <NavBar cartItemsCount={cartItems.length}></NavBar>
+      <Cart cartItems={cartItems} onClear={() => setCartItems([])}></Cart>
     </div>
   );
 }
