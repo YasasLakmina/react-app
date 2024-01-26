@@ -13,6 +13,19 @@ function App() {
   //Sharing state between components
   const [cartItems, setCartItems] = useState(["Product1", "Product2"]);
 
+  //Exercise 1- updating state
+  const [game, setGame] = useState({
+    id: 1,
+    player: {
+      name: "John",
+    },
+  });
+  //Execise 2
+  const [pizza, setPizza] = useState({
+    name: "Spicy Pepperoni",
+    toppings: ["Mushroom"],
+  });
+
   //Same kind stateHooks
   // const [title, setTitle] = useState("Americano");
   // const [price, setPrice] = useState(5);
@@ -42,6 +55,12 @@ function App() {
         if (bug) bug.fixed = true;
       })
     );
+
+    const handleClick1 = () => {
+      setGame({ ...game, player: { ...game.player, name: "Bob" } });
+
+      setPizza({ ...pizza, toppings: [...pizza.toppings, "Cheese"] });
+    };
 
     //Add
     setTags([...tags, "exiting"]);
