@@ -5,6 +5,7 @@ import { useState } from "react";
 import Alert from "./Components/Alert";
 import Button from "./Components/Button/Button";
 import Like from "./Components/Like";
+import { produce } from "immer";
 
 function App() {
   //Same kind stateHooks
@@ -27,7 +28,15 @@ function App() {
 
   const handleClick = () => {
     //to update array of objects
-    setBugs(bugs.map((bug) => (bug.id === 1 ? { ...bug, fixed: true } : bug)));
+    //setBugs(bugs.map((bug) => (bug.id === 1 ? { ...bug, fixed: true } : bug)));
+
+    //update array of objects using immer
+    setBugs(
+      produce((draft) => {
+        const bug = draft.find((bug) => bug.id === 1);
+        if (bug) bug.fixed = true;
+      })
+    );
 
     //Add
     setTags([...tags, "exiting"]);
@@ -67,6 +76,11 @@ function App() {
       <br />
       {drink.price}
       <> </>
+      {bugs.map((bug) => (
+        <p key={bug.id}>
+          {bug.title} {bug.fixed ? "Fixed" : "New"}
+        </p>
+      ))}
       <button onClick={handleClick}> Click Me</button>
     </div>
   );
