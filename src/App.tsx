@@ -8,10 +8,46 @@ import Like from "./Components/Like";
 import { produce } from "immer";
 import NavBar from "./Components/NavBar";
 import Cart from "./Components/Cart";
+import ExpandableText from "./Components/ExpandableText";
 
 function App() {
   //Sharing state between components
   const [cartItems, setCartItems] = useState(["Product1", "Product2"]);
+
+  //Exercise 1- updating state
+  const [game, setGame] = useState({
+    id: 1,
+    player: {
+      name: "John",
+    },
+  });
+  //Execise 2
+  const [pizza, setPizza] = useState({
+    name: "Spicy Pepperoni",
+    toppings: ["Mushroom"],
+  });
+
+  //Exercise 3
+  const [cart, setCart] = useState({
+    discount: 0.1,
+    items: [
+      { id: 1, title: "Product 1", quantity: 1 },
+      { id: 2, title: "Product 2", quantity: 2 },
+    ],
+  });
+
+  const handleClick1 = () => {
+    setGame({ ...game, player: { ...game.player, name: "Bob" } });
+
+    setPizza({ ...pizza, toppings: [...pizza.toppings, "Cheese"] });
+
+    setCart({
+      ...cart,
+      items: cart.items.map((item) =>
+        item.id === 1 ? { ...item, quantity: item.quantity + 1 } : item
+      ),
+    });
+  };
 
   //Same kind stateHooks
   // const [title, setTitle] = useState("Americano");
@@ -22,8 +58,6 @@ function App() {
     title: "Americano",
     price: 5,
   });
-
-  const [tags, setTags] = useState(["happy", "cheerful"]);
 
   //Updating an array of objects
   const [bugs, setBugs] = useState([
@@ -43,6 +77,7 @@ function App() {
       })
     );
 
+    const [tags, setTags] = useState(["happy", "cheerful"]);
     //Add
     setTags([...tags, "exiting"]);
 
@@ -91,6 +126,21 @@ function App() {
       {/*//Sharing state between NavBar and Cart Components*/}
       <NavBar cartItemsCount={cartItems.length}></NavBar>
       <Cart cartItems={cartItems} onClear={() => setCartItems([])}></Cart>
+
+      <ExpandableText maxChars={50}>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt,
+        blanditiis! Debitis consequatur suscipit doloremque voluptatem minima
+        aperiam provident distinctio enim quidem, autem mollitia ad, quod
+        reiciendis laboriosam error totam tempora praesentium velit perferendis
+        officia. Esse tempore nulla, tempora, ratione laudantium ad a
+        exercitationem eum rerum nemo eligendi quibusdam, error suscipit iure
+        voluptatum quas vero. Nemo ab sunt dolorem fugit ipsum blanditiis
+        deserunt nostrum recusandae aliquam voluptate asperiores alias, odit
+        itaque, est, in necessitatibus repellendus officia error doloremque.
+        Quibusdam iure veritatis harum illo rerum eius neque quas hic animi
+        placeat repellat quisquam voluptatum, quam aliquam assumenda provident!
+        Totam in nulla corrupti.
+      </ExpandableText>
     </div>
   );
 }
