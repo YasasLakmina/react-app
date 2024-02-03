@@ -9,6 +9,8 @@ import { produce } from "immer";
 import NavBar from "./Components/NavBar";
 import Cart from "./Components/Cart";
 import ExpandableText from "./Components/ExpandableText";
+import Form from "./Components/Form";
+import "./App.css";
 
 function App() {
   //Sharing state between components
@@ -141,6 +143,8 @@ function App() {
         placeat repellat quisquam voluptatum, quam aliquam assumenda provident!
         Totam in nulla corrupti.
       </ExpandableText>
+
+      <Form></Form>
     </div>
   );
 }
