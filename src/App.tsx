@@ -11,8 +11,23 @@ import Cart from "./Components/Cart";
 import ExpandableText from "./Components/ExpandableText";
 import Form from "./Components/Form";
 import "./App.css";
+import ExpenseList from "./expense-tracker/Components/ExpenseList";
+import ExpenseFilteer from "./expense-tracker/Components/ExpenseFilteer";
 
 function App() {
+  const [selectedCategory, setSelectedCategory] = useState("");
+
+  const [expenses, setExpanses] = useState([
+    { id: 1, description: "aaa", amount: 10, category: "Utilities" },
+    { id: 2, description: "bbb", amount: 10, category: "Utilities" },
+    { id: 3, description: "ccc", amount: 10, category: "Groceries" },
+    { id: 4, description: "ddd", amount: 10, category: "Utilities" },
+  ]);
+
+  const visibleExpenses = selectedCategory
+    ? expenses.filter((e) => e.category === selectedCategory)
+    : expenses;
+
   //Sharing state between components
   const [cartItems, setCartItems] = useState(["Product1", "Product2"]);
 
@@ -145,6 +160,18 @@ function App() {
       </ExpandableText>
 
       <Form></Form>
+      <br />
+      <br />
+      <div className="mb-3">
+        <ExpenseFilteer
+          onSelectCategory={(category) => setSelectedCategory(category)}
+        ></ExpenseFilteer>
+      </div>
+
+      <ExpenseList
+        expenses={visibleExpenses}
+        onDelete={(id) => setExpanses(expenses.filter((e) => e.id !== id))}
+      ></ExpenseList>
     </div>
   );
 }
