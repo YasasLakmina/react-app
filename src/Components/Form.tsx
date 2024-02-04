@@ -1,8 +1,17 @@
 import React, { FormEvent, useRef } from "react";
 import { FieldValue, FieldValues, useForm } from "react-hook-form";
 
+interface FormData {
+  name: string;
+  age: number;
+}
+
 const Form = () => {
-  const { register, handleSubmit } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormData>();
 
   const nameref = useRef<HTMLInputElement>(null);
   const ageref = useRef<HTMLInputElement>(null);
@@ -25,7 +34,17 @@ const Form = () => {
         <label htmlFor="text" className="form-lable">
           Name
         </label>
-        <input {...register("name")} type="text" className="form-control" />
+        <input
+          {...register("name", { required: true, minLength: 3 })}
+          type="text"
+          className="form-control"
+        />
+        {errors.name?.type === "required" && (
+          <p className="text-danger">The name field is requied.</p>
+        )}
+        {errors.name?.type === "minLength" && (
+          <p className="text-danger">The name must be at least 3 characters</p>
+        )}
       </div>
       <div className="mb-3">
         <label htmlFor="age" className="form-label">
