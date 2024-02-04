@@ -5,6 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 const schema = z.object({
   name: z.string().min(3, { message: "Name must be at least 3 characters." }),
+  /*this will check type is number and wether it is grater than 18*/
   age: z.number({ invalid_type_error: "Age field is required." }).min(18),
 });
 
@@ -19,7 +20,7 @@ const Form = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useForm<FormData>({ resolver: zodResolver(schema) });
 
   const nameref = useRef<HTMLInputElement>(null);
@@ -59,14 +60,16 @@ const Form = () => {
           Age
         </label>
         <input
-          {...register("age", { valueAsNumber: true })}
+          {...register("age", {
+            valueAsNumber: true /* this will convert the type to string*/,
+          })}
           id="age"
           type="number"
           className="form-control"
         />
         {errors.age && <p className="text-danger">{errors.age.message}</p>}
       </div>
-      <button className="btn btn-primary" type="submit">
+      <button disabled={!isValid} className="btn btn-primary" type="submit">
         Submit
       </button>
     </form>
