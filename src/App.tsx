@@ -13,6 +13,9 @@ import Form from "./Components/Form";
 import "./App.css";
 import ExpenseList from "./expense-tracker/Components/ExpenseList";
 import ExpenseFilteer from "./expense-tracker/Components/ExpenseFilteer";
+import ExpenseForm from "./expense-tracker/Components/ExpenseForm";
+
+export const categories = ["Groceries", "Utilities", "Entertainment"];
 
 function App() {
   const [selectedCategory, setSelectedCategory] = useState("");
@@ -162,6 +165,9 @@ function App() {
       <Form></Form>
       <br />
       <br />
+      <div className="mb-5">
+        <ExpenseForm />
+      </div>
       <div className="mb-3">
         <ExpenseFilteer
           onSelectCategory={(category) => setSelectedCategory(category)}
