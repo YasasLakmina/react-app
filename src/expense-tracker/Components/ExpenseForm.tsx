@@ -82,7 +82,7 @@ const ExpenseForm = ({ onSubmit }: Props) => {
           <p className="text-danger">{errors.category.message}</p>
         )}
       </div>
-      <button className="btn-btn-primary">Submit</button>
+      <button className="btn btn-primary">Submit</button>
     </form>
   );
 };
