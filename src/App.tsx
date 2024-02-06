@@ -14,8 +14,11 @@ import "./App.css";
 import ExpenseList from "./expense-tracker/Components/ExpenseList";
 import ExpenseFilteer from "./expense-tracker/Components/ExpenseFilteer";
 import ExpenseForm from "./expense-tracker/Components/ExpenseForm";
+import ProductList from "./Components/ProductList";
 
 function App() {
+  const [category, setCategory] = useState("");
+
   const [selectedCategory, setSelectedCategory] = useState("");
 
   const [expenses, setExpanses] = useState([
@@ -180,6 +183,17 @@ function App() {
         expenses={visibleExpenses}
         onDelete={(id) => setExpanses(expenses.filter((e) => e.id !== id))}
       ></ExpenseList>
+
+      <select
+        onChange={(event) => setCategory(event.target.value)}
+        className="form-select"
+      >
+        <option value=""></option>
+        <option value="Clothing">Clothing</option>
+        <option value="Household">HouseHold</option>
+      </select>
+
+      <ProductList category={category} />
     </div>
   );
 }
