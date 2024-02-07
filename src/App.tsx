@@ -15,16 +15,11 @@ import ExpenseList from "./expense-tracker/Components/ExpenseList";
 import ExpenseFilteer from "./expense-tracker/Components/ExpenseFilteer";
 import ExpenseForm from "./expense-tracker/Components/ExpenseForm";
 import ProductList from "./Components/ProductList";
-import { useFormState } from "react-hook-form";
-import { CanceledError } from "./services/api-client";
 import userService, { User } from "./services/user-service";
+import useUsers from "./hooks/useUsers";
 
 function App() {
-  const [users, setUsers] = useState<User[]>([]);
-
-  const [error, setError] = useState("");
-
-  const [isLoading, setLoading] = useState(false);
+  const { users, error, isLoading, setUsers, setError } = useUsers();
 
   //Deleting data from server
   const deleteUser = (user: User) => {
@@ -67,25 +62,6 @@ function App() {
       setUsers(originalUsers);
     });
   };
-
-  //Fetching data from the server
-  useEffect(() => {
-    setLoading(true);
-
-    const { request, cancel } = userService.getAll<User>();
-    request
-      .then((response) => {
-        setUsers(response.data);
-        setLoading(false);
-      })
-      .catch((error) => {
-        if (error instanceof CanceledError) return;
-        setError(error.message);
-        setLoading(false);
-      });
-
-    return () => cancel();
-  }, []);
 
   const [category, setCategory] = useState("");
 
