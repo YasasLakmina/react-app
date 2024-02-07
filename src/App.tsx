@@ -1,7 +1,7 @@
 import ListGroup from "./Components/ListGroup";
 import { AiFillApple } from "react-icons/ai";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Alert from "./Components/Alert";
 import Button from "./Components/Button/Button";
 import Like from "./Components/Like";
@@ -15,8 +15,25 @@ import ExpenseList from "./expense-tracker/Components/ExpenseList";
 import ExpenseFilteer from "./expense-tracker/Components/ExpenseFilteer";
 import ExpenseForm from "./expense-tracker/Components/ExpenseForm";
 import ProductList from "./Components/ProductList";
+import axios from "axios";
+
+interface User {
+  id: number;
+  name: string;
+}
 
 function App() {
+  const [users, setUsers] = useState<User[]>([]);
+
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    axios
+      .get<User[]>("https://jsonplaceholder.typicode.com/users")
+      .then((response) => setUsers(response.data))
+      .catch((error) => setError(error.message));
+  }, []);
+
   const [category, setCategory] = useState("");
 
   const [selectedCategory, setSelectedCategory] = useState("");
@@ -194,6 +211,13 @@ function App() {
       </select>
 
       <ProductList category={category} />
+
+      {error && <p className="text-danger">{error}</p>}
+      <ul>
+        {users.map((user) => (
+          <li key={user.id}>{user.name}</li>
+        ))}
+      </ul>
     </div>
   );
 }
