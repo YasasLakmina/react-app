@@ -15,7 +15,7 @@ import ExpenseList from "./expense-tracker/Components/ExpenseList";
 import ExpenseFilteer from "./expense-tracker/Components/ExpenseFilteer";
 import ExpenseForm from "./expense-tracker/Components/ExpenseForm";
 import ProductList from "./Components/ProductList";
-import axios from "axios";
+import axios, { CanceledError } from "axios";
 
 interface User {
   id: number;
@@ -28,10 +28,18 @@ function App() {
   const [error, setError] = useState("");
 
   useEffect(() => {
+    const controller = new AbortController();
     axios
-      .get<User[]>("https://jsonplaceholder.typicode.com/users")
+      .get<User[]>("https://jsonplaceholder.typicode.com/users", {
+        signal: controller.signal,
+      })
       .then((response) => setUsers(response.data))
-      .catch((error) => setError(error.message));
+      .catch((error) => {
+        if (error instanceof CanceledError) return;
+        setError(error.message);
+      });
+
+    return () => controller.abort();
   }, []);
 
   const [category, setCategory] = useState("");
