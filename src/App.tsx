@@ -15,7 +15,8 @@ import ExpenseList from "./expense-tracker/Components/ExpenseList";
 import ExpenseFilteer from "./expense-tracker/Components/ExpenseFilteer";
 import ExpenseForm from "./expense-tracker/Components/ExpenseForm";
 import ProductList from "./Components/ProductList";
-import axios, { CanceledError } from "axios";
+import { useFormState } from "react-hook-form";
+import apiClient, { CanceledError } from "./services/api-client";
 
 interface User {
   id: number;
@@ -29,23 +30,53 @@ function App() {
 
   const [isLoading, setLoading] = useState(false);
 
+  //Deleting data from server
   const deleteUser = (user: User) => {
     const originalUsers = [...users];
 
     setUsers(users.filter((u) => u.id !== user.id));
 
-    axios
-      .delete("https://jsonplaceholder.typicode.com/users" + user.id)
+    apiClient.delete("/users/" + user.id).catch((err) => {
+      setError(err.message);
+      setUsers(originalUsers);
+    });
+  };
+
+  //Adding data to the server
+
+  const addUser = () => {
+    const originalUsers = [...users];
+    const newUser = { id: 0, name: "Mosh" };
+    setUsers([...users, newUser]);
+
+    apiClient
+      .post("/users", newUser)
+      .then(({ data: savedUser }) => setUsers([savedUser, ...users]))
       .catch((err) => {
         setError(err.message);
         setUsers(originalUsers);
       });
   };
 
+  //Updating data from the server
+  const updateUser = (user: User) => {
+    const originalUsers = [...users];
+
+    const updatedUser = { ...user, name: user.name + "!" };
+
+    setUsers(users.map((u) => (u.id === user.id ? updatedUser : u)));
+
+    apiClient.put("/users/" + user.id, updatedUser).catch((err) => {
+      setError(err.message);
+      setUsers(originalUsers);
+    });
+  };
+
+  //Fetching data from the server
   useEffect(() => {
     const controller = new AbortController();
-    axios
-      .get<User[]>("https://jsonplaceholder.typicode.com/users", {
+    apiClient
+      .get<User[]>("/users", {
         signal: controller.signal,
       })
       .then((response) => {
@@ -241,6 +272,9 @@ function App() {
 
       {error && <p className="text-danger">{error}</p>}
       {isLoading && <div className="spinner-border"></div>}
+      <button className="btn btn-primary mb-3" onClick={addUser}>
+        Add
+      </button>
       <ul className="list-group">
         {users.map((user) => (
           <li
@@ -248,12 +282,20 @@ function App() {
             key={user.id}
           >
             {user.name}
-            <button
-              onClick={() => deleteUser(user)}
-              className="btn btn-outline-danger"
-            >
-              Delete
-            </button>
+            <div>
+              <button
+                className="btn btn-outline-secondary mx-1"
+                onClick={() => updateUser(user)}
+              >
+                Update
+              </button>
+              <button
+                onClick={() => deleteUser(user)}
+                className="btn btn-outline-danger"
+              >
+                Delete
+              </button>
+            </div>
           </li>
         ))}
       </ul>
